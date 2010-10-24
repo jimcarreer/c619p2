@@ -131,8 +131,6 @@ namespace Hades
         #endregion
 
         #region Operators
-        static public bool operator ==(Person p1, Person p2) { return p1.Equals(p2); }
-        static public bool operator !=(Person p1, Person p2) { return !p1.Equals(p2); }
         //For our purposes in the tree order is determined by the low end of the interval a.k.a
         // the person's birthdate.
         public static bool operator >(Person p1, Person p2) { return (p1.Born > p2.Born); }
@@ -164,8 +162,12 @@ namespace Hades
         public Person NextPerson()
         {
             string data = mReader.ReadLine();
+            if (data == null)
+                return null;
             string[] elements = data.Split(',');
             Person p = null;
+            if (elements.Length == 0)
+                return null;
             if (elements.Length < 3 || elements[2].Trim() == "")
                 p = new Person(elements[0], elements[1]);
             else

@@ -8,11 +8,16 @@ namespace Hades
     class BinaryTree
     {
         protected Node mRoot = null;
+        protected int mNodeCount = 0;
 
         #region Properties
         public Node Root
         {
             get { return mRoot; }
+        }
+        public int NodeCount
+        {
+            get { return mNodeCount; }
         }
         #endregion
 
@@ -45,13 +50,13 @@ namespace Hades
         public bool Search(Person p, out int depth)
         {
             depth = -1;
-            return Search(mRoot, p, ref depth);
+            return Search(mRoot, p, ref depth) != null;
         }
 
         public bool Search(Person p)
         {
             int depth = -1;
-            return Search(mRoot, p, ref depth);
+            return Search(mRoot, p, ref depth) != null;
         }
         #endregion
 
@@ -60,7 +65,7 @@ namespace Hades
         /// Code adapted from python code found at
         /// http://en.wikipedia.org/wiki/Binary_search_tree#Deletion
         /// <summary>
-        protected void Delete(Node subroot, Person p)
+        protected virtual void Delete(Node subroot, Person p)
         {
             if (p < subroot.Key)
                 Delete(subroot.LeftChild, p);
@@ -71,24 +76,28 @@ namespace Hades
                 Node successor = LocalMin(subroot.RightChild);
                 subroot.Key = successor.Key;
                 successor.Replace(successor.RightChild);
+                mNodeCount--;
             }
             else if (subroot.LeftChild != null && subroot.RightChild == null)
             {
                 subroot.Replace(subroot.LeftChild);
                 if (subroot == mRoot)
                     mRoot = mRoot.LeftChild;
+                mNodeCount--;
             }
             else if (subroot.LeftChild == null && subroot.RightChild != null)
             {
                 subroot.Replace(subroot.RightChild);
                 if (subroot == mRoot)
                     mRoot = mRoot.RightChild;
+                mNodeCount--;
             }
             else
             {
                 subroot.Replace(null);
                 if (subroot == mRoot)
                     mRoot = null;
+                mNodeCount--;
             }
         }
 
@@ -104,11 +113,12 @@ namespace Hades
         /// Code adapted from java code found at
         /// http://en.wikipedia.org/wiki/Binary_search_tree#Insertion
         /// </summary>
-        protected Node Insert(Node subroot, Person p)
+        protected virtual Node Insert(Node subroot, Person p)
         {
             if (subroot == null)
             {
                 subroot = new Node(p);
+                mNodeCount++;
                 return subroot;
             }
             else
@@ -131,17 +141,17 @@ namespace Hades
         /// Code adapted from python code found at
         /// http://en.wikipedia.org/wiki/Binary_search_tree#Searching
         /// </summary>
-        protected bool Search(Node subroot, Person p, ref int depth)
+        protected virtual Node Search(Node subroot, Person p, ref int depth)
         {
             depth++;
             if (subroot == null)
-                return false;
+                return null;
             if (p < subroot.Key)
                 return Search(subroot.LeftChild, p, ref depth);
             else if (p > subroot.Key)
                 return Search(subroot.RightChild, p, ref depth);
             else
-                return true;
+                return subroot;
         }
         #endregion
     }
