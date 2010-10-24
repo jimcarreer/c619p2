@@ -13,7 +13,7 @@ namespace Hades
             Random rand = new Random();
 
             BinaryTree btree = new BinaryTree();
-            for (int i = 0; i <= 20; i++)
+            for (int i = 0; i <= 100; i++)
             {
                 int lifespan = rand.Next(25, 80);
                 DateTime birthdate = bg.NextBirthday();
