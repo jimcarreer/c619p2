@@ -35,7 +35,8 @@ namespace Hades
         /// <param name="p"></param>
         public void Delete(Person p)
         {
-
+            if (mRoot != null)
+                Delete(mRoot, p);
         }
         #endregion
 
@@ -46,7 +47,11 @@ namespace Hades
         /// <summary>
         protected void Delete(Node subroot, Person p)
         {
-            if (p < subroot.Key)
+            if (subroot == mRoot)
+            {
+
+            }
+            else if (p < subroot.Key)
                 Delete(subroot.LeftChild, p);
             else if (p > subroot.Key)
                 Delete(subroot.RightChild, p);

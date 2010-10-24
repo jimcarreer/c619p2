@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace Hades
 {
@@ -138,6 +139,39 @@ namespace Hades
         public static bool operator <(Person p1, Person p2) { return (p1.Born < p2.Born); }
         public static bool operator >=(Person p1, Person p2) { return (p1.Born >= p2.Born); }
         public static bool operator <=(Person p1, Person p2) { return (p1.Born <= p2.Born); }
+        #endregion
+    }
+
+    class PersonReader
+    {
+        #region Members
+        private StreamReader mReader = null;    
+        #endregion
+
+        #region Constructors
+        public PersonReader(string file)
+        {
+            mReader = new StreamReader(new FileStream(file, FileMode.Open));
+        }
+        #endregion
+
+        #region Public Methods
+        public void Close()
+        {
+            mReader.Close();
+        }
+
+        public Person NextPerson()
+        {
+            string data = mReader.ReadLine();
+            string[] elements = data.Split(',');
+            Person p = null;
+            if (elements.Length < 3 || elements[2].Trim() == "")
+                p = new Person(elements[0], elements[1]);
+            else
+                p = new Person(elements[0], elements[1], elements[2]);
+            return p;
+        }
         #endregion
     }
 }
