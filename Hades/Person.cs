@@ -50,10 +50,10 @@ namespace Hades
         #region Properties
         public int Age
         {
-            get { return (int)Math.Floor(LifeSpan.TotalDays / 365.25); }
+            get { return (int)(Math.Floor(LifeSpan.TotalDays / 365.25)) + 1; }
         }
 
-        public DateTime Birth
+        public DateTime Born
         {
             get { return mBirth; }
         }
@@ -84,6 +84,60 @@ namespace Hades
         {
             get { return mName; }
         }
+        #endregion
+
+        #region Overridden
+        public override bool Equals(object obj)
+        {
+            Person p = obj as Person;
+            if (p == null)
+                return false;
+
+            return Died == p.Died &&
+                   Born == p.Born &&
+                   IsAlive == p.IsAlive &&
+                   Name == p.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = Name.GetHashCode();
+            return hash ^ Died.Year ^ Born.Year;
+        }
+
+        public override string ToString()
+        {
+            return ToString("N");
+        }
+
+        public string ToString(string format)
+        {
+            string death = mDeath.ToString("MM/dd/yyyy");
+            string birth = mBirth.ToString("MM/dd/yyyy");
+            if(mAlive)
+                death = "PRESENT";
+            switch (format)
+            {
+                case "N":
+                    return String.Format("{0,3} : ", Age) + birth + " - " + death;
+                case "G":
+                    return birth + "\\n" + death;
+                default:
+                    throw new ArgumentException("Unrecognized format '" + format + "'");
+            }
+
+        }
+        #endregion
+
+        #region Operators
+        static public bool operator ==(Person p1, Person p2) { return p1.Equals(p2); }
+        static public bool operator !=(Person p1, Person p2) { return !p1.Equals(p2); }
+        //For our purposes in the tree order is determined by the low end of the interval a.k.a
+        // the person's birthdate.
+        public static bool operator >(Person p1, Person p2) { return (p1.Born > p2.Born); }
+        public static bool operator <(Person p1, Person p2) { return (p1.Born < p2.Born); }
+        public static bool operator >=(Person p1, Person p2) { return (p1.Born >= p2.Born); }
+        public static bool operator <=(Person p1, Person p2) { return (p1.Born <= p2.Born); }
         #endregion
     }
 }
