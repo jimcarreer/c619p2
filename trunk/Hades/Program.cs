@@ -16,13 +16,17 @@ namespace Hades
             Person testdelete = null;
             BinaryTree btree = new BinaryTree();
             Person p = null;
-            for (int i = 0; i <= 8; i++)
+            int read = 0;
+            for (int i = 0; i <= 200; i++)
             {
                 //int lifespan = rand.Next(25, 80);
                 //DateTime birthdate = bg.NextBirthday();
                 //DateTime deathdate = birthdate.AddYears(lifespan);
                 //p = new Person("Test" + i.ToString(), birthdate, deathdate);
+                read++;
                 p = pr.NextPerson();
+                if (p == null)
+                    break;
                 Console.WriteLine("Inserting " + p);
                 if (i == 5)
                     testdelete = p;
@@ -33,6 +37,7 @@ namespace Hades
             int depth = 0;
             //Initial tree
             btree.Root.WriteDotGraph("initial.gvd");
+            Console.WriteLine("Node Count " + btree.NodeCount);
             
             //Remove testdelete, search before and after
             if (btree.Search(testdelete, out depth))
@@ -45,8 +50,10 @@ namespace Hades
                 Console.WriteLine("Found     " + testdelete + " with depth " + depth);
             else
                 Console.WriteLine("Not Found " + testdelete + " with depth " + depth);
-            btree.Root.WriteDotGraph("deleteinner.gvd");
+            btree.Root.WriteDotGraph("test2.gvd");
+            Console.WriteLine("Node Count " + btree.NodeCount);
 
+            //Remove root, search before and after
             if (btree.Search(btree.Root.Key, out depth))
                 Console.WriteLine("Found     " + btree.Root.Key + " with depth " + depth);
             else
@@ -58,7 +65,8 @@ namespace Hades
                 Console.WriteLine("Found     " + oldroot + " with depth " + depth);
             else
                 Console.WriteLine("Not Found " + oldroot + " with depth " + depth);
-            btree.Root.WriteDotGraph("deleteroot.gvd");
+            btree.Root.WriteDotGraph("test1.gvd");
+            Console.WriteLine("Node Count " + btree.NodeCount);
             Console.ReadKey();
         }
     }
