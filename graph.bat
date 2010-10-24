@@ -12,5 +12,5 @@ for /f %%a IN ('dir /b %gvddir%\*.gvd') do (%dotexe% %gvddir%\%%a -Tjpeg -o %out
 GOTO END
 :NOFILES
 echo There are no gvd files in \Hades\bin\Debug to generate images of.
-:END
 PAUSE
+:END
