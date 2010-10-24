@@ -1,4 +1,4 @@
- @echo off
+@echo off
 set gvddir=.\Hades\bin\Debug
 set dotexe=.\dot\bin\dot.exe
 set outdir=.\graphs
@@ -14,3 +14,4 @@ GOTO END
 echo There are no gvd files in \Hades\bin\Debug to generate images of.
 PAUSE
 :END
+del %gvddir%\*.gvd
