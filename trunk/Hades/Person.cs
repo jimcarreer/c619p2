@@ -116,7 +116,7 @@ namespace Hades
             string death = mDeath.ToString("MM/dd/yyyy");
             string birth = mBirth.ToString("MM/dd/yyyy");
             if(mAlive)
-                death = "PRESENT";
+                death = "PRESENT   ";
             switch (format)
             {
                 case "N":
