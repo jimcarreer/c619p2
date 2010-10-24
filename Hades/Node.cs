@@ -20,9 +20,9 @@ namespace Hades
         //Interval Tree Augmentation Data
         public DateTime RightMax = DateTime.MaxValue;
         public DateTime LeftMax = DateTime.MaxValue;
-
         //Sweet data center
-        private Person mKey = null;
+        public Person Key = null;
+        
         //We actually use this when generating pretty graphs, not useful
         // in balancing the tree or answering queries.
         private Guid mGUID;
@@ -32,7 +32,7 @@ namespace Hades
         public Node(Person p)
         {
             mGUID = Guid.NewGuid();
-            mKey = p;
+            Key = p;
         }
 
         public Node(Person p, Node parent, Node right, Node left)
@@ -44,8 +44,16 @@ namespace Hades
         }
         #endregion
 
-        #region Properties
-        public Person Key { get { return mKey; } }
+        #region Public Methods
+        public void Replace(Node replacement)
+        {
+            if (this == this.Parent.LeftChild)
+                Parent.LeftChild = replacement;
+            else
+                Parent.RightChild = replacement;
+            if (replacement != null)
+                replacement.Parent = this.Parent;
+        }
         #endregion
 
         #region GraphViz Code Generater
