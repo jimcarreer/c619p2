@@ -5,15 +5,22 @@ using System.Text;
 using System.IO;
 
 namespace Hades
+     
 {
     class Node
     {
         #region Members
-        public enum Colors { Red, Black };
+        public enum Colors { Red, Black, bad};
+
+        public enum Direction
+        {
+            Left, Right
+        }
 
         //Basic Binary Tree Data
         public Node LeftChild = null;
         public Node RightChild = null;
+        public Person person = null;
         //Red Black Tree Augmentation Data
         public Node Parent = null;
         public Colors Color = Colors.Black;
@@ -22,6 +29,8 @@ namespace Hades
         public DateTime LeftMax = DateTime.MaxValue;
         //Sweet data center
         public Person Key = null;
+
+        
         
         //We actually use this when generating pretty graphs, not useful
         // in balancing the tree or answering queries.
@@ -35,13 +44,18 @@ namespace Hades
             Key = p;
         }
 
+
+
         public Node(Person p, Node parent, Node right, Node left)
             :this(p)
         {
+            Key = p;
+            person = p;
             Parent = parent;
             RightChild = right;
             LeftChild = left;
         }
+
         #endregion
 
         #region Public Methods
