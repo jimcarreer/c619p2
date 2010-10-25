@@ -104,6 +104,7 @@ namespace Hades
 
             if (subroot == null)
                 return null;
+
             subroot.NullifyFamily();
             return subroot;
         }
