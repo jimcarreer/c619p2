@@ -65,40 +65,47 @@ namespace Hades
         /// Code adapted from python code found at
         /// http://en.wikipedia.org/wiki/Binary_search_tree#Deletion
         /// <summary>
-        protected virtual void Delete(Node subroot, Person p)
+        protected virtual Node Delete(Node subroot, Person p)
         {
+            //All these cases are when we are still searching
             if (p < subroot.Key)
-                Delete(subroot.LeftChild, p);
+                return Delete(subroot.LeftChild, p);
             else if (p > subroot.Key)
-                Delete(subroot.RightChild, p);
+                return Delete(subroot.RightChild, p);
+            //All these cases are when the node is found
             else if (subroot.LeftChild != null && subroot.RightChild != null)
             {
                 Node successor = LocalMin(subroot.RightChild);
                 subroot.Key = successor.Key;
-                successor.Replace(successor.RightChild);
+                successor.ReplaceInParent(successor.RightChild);
                 mNodeCount--;
             }
             else if (subroot.LeftChild != null && subroot.RightChild == null)
             {
-                subroot.Replace(subroot.LeftChild);
+                subroot.ReplaceInParent(subroot.LeftChild);
                 if (subroot == mRoot)
                     mRoot = mRoot.LeftChild;
                 mNodeCount--;
             }
             else if (subroot.LeftChild == null && subroot.RightChild != null)
             {
-                subroot.Replace(subroot.RightChild);
+                subroot.ReplaceInParent(subroot.RightChild);
                 if (subroot == mRoot)
                     mRoot = mRoot.RightChild;
                 mNodeCount--;
             }
             else
             {
-                subroot.Replace(null);
+                subroot.ReplaceInParent(null);
                 if (subroot == mRoot)
                     mRoot = null;
                 mNodeCount--;
             }
+
+            if (subroot == null)
+                return null;
+            subroot.NullifyFamily();
+            return subroot;
         }
 
         protected Node LocalMin(Node subroot)
