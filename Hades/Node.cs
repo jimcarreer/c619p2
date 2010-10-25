@@ -56,9 +56,6 @@ namespace Hades
                 Parent.RightChild = replacement;
             if (replacement != null)
                 replacement.Parent = this.Parent;
-
-            //Fully nullify all relations
-            this.NullifyFamily();
         }
 
         public virtual void NullifyFamily()
