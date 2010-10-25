@@ -8,9 +8,9 @@ namespace Hades
     class RedBlackTree : BinaryTree
     {
         #region Protected Methods
-        protected override void Delete(Node subroot, Person p)
+        protected override Node Delete(Node subroot, Person p)
         {
-            base.Delete(subroot, p);
+            return base.Delete(subroot, p);
         }
 
         protected override Node Insert(Node subroot, Person p)

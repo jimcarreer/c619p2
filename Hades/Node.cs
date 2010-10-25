@@ -45,14 +45,67 @@ namespace Hades
         #endregion
 
         #region Public Methods
-        public void Replace(Node replacement)
+        public virtual void ReplaceInParent(Node replacement)
         {
+            if (this.Parent == null)
+                throw new Exception("This node has no parent to be replaced in");
+
             if (this == this.Parent.LeftChild)
                 Parent.LeftChild = replacement;
             else
                 Parent.RightChild = replacement;
             if (replacement != null)
                 replacement.Parent = this.Parent;
+
+            //Fully nullify all relations
+            this.NullifyFamily();
+        }
+
+        public virtual void NullifyFamily()
+        {
+            this.Parent = null;
+            this.RightChild = null;
+            this.LeftChild = null;
+        }
+        #endregion
+
+        #region Various relations
+        public Node GrandParent
+        {
+            get
+            {
+                if (this.Parent != null)
+                    return this.Parent.Parent;
+                else
+                    return null;
+            }
+        }
+
+        public Node Uncle
+        {
+            get
+            {
+                Node g = this.GrandParent;
+                if (g == null)
+                    return null;
+                if (this.Parent == g.LeftChild)
+                    return g.RightChild;
+                else
+                    return g.LeftChild;
+            }
+        }
+
+        public Node Sibling
+        {
+            get
+            {
+                if(this.Parent == null)
+                    return null;
+                if (this == this.Parent.LeftChild)
+                    return this.Parent.RightChild;
+                else
+                    return this.Parent.LeftChild;
+            }
         }
         #endregion
 
