@@ -241,14 +241,15 @@ namespace Trees
          {
 
              p = pr.NextPerson();
-            redBlackTree.Insert(p.LifeSpan);
+            redBlackTree.Insert(p.Age);
             random.Next();
             if (i == 10)
                 test = p;
 
          }
         // redBlackTree.Insert(993);
-         System.TimeSpan pt = (System.TimeSpan)redBlackTree.Search(p.LifeSpan);
+        // System.TimeSpan pt = (System.TimeSpan)redBlackTree.Search(p.LifeSpan);
+            int pt = (int)redBlackTree.Search(p.Age);
          
              redBlackTree.Display();
              Console.WriteLine("The number " + pt + " has been found.");
