@@ -26,7 +26,7 @@ namespace Hades
         /// Insertion entry method
         /// </summary>
         /// <param name="p">New person to insert</param>
-        public void Insert(Person p)
+        public virtual void Insert(Person p)
         {
             if (mRoot == null)
             {
@@ -101,9 +101,6 @@ namespace Hades
                     mRoot = null;
                 mNodeCount--;
             }
-
-            if (subroot == null)
-                return null;
 
             return subroot;
         }
