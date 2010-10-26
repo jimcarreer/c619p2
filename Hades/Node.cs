@@ -10,17 +10,14 @@ namespace Hades
     class Node
     {
         #region Members
-        public enum Colors { Red, Black, bad};
+        public enum Colors { Red, Black };
+        public enum Direction { Left, Right };
 
-        public enum Direction
-        {
-            Left, Right
-        }
+        public static Node Sentinal = new Node();
 
         //Basic Binary Tree Data
         public Node LeftChild = null;
         public Node RightChild = null;
-        public Person person = null;
         //Red Black Tree Augmentation Data
         public Node Parent = null;
         public Colors Color = Colors.Black;
@@ -30,27 +27,30 @@ namespace Hades
         //Sweet data center
         public Person Key = null;
 
-        
-        
         //We actually use this when generating pretty graphs, not useful
         // in balancing the tree or answering queries.
         private Guid mGUID;
         #endregion
 
         #region Constructors
+        private Node()
+        {
+            Key = null;
+            RightChild = this;
+            LeftChild = this;
+            Parent = null;
+            Color = Colors.Black;
+        }
+
         public Node(Person p)
         {
             mGUID = Guid.NewGuid();
             Key = p;
         }
 
-
-
         public Node(Person p, Node parent, Node right, Node left)
             :this(p)
         {
-            Key = p;
-            person = p;
             Parent = parent;
             RightChild = right;
             LeftChild = left;
@@ -128,6 +128,10 @@ namespace Hades
         /// <param name="output">Stream to write generated code to</param>
         private void WriteDotCode(StreamWriter output)
         {
+            //Must be sentinal
+            if (Key == null)
+                return;
+
             string name = "Node_" + mGUID.ToString("N");
             string label = "label=\"<f0> " + LeftMax.ToString("MM/dd/yyyy");
             label += " | <f1> " + Key.ToString("G");
@@ -148,11 +152,22 @@ namespace Hades
                 LeftChild.WriteDotCode(output);
 
             //Write structural code
-            if (RightChild != null)
+            if (RightChild != null && RightChild != Node.Sentinal)
                 output.WriteLine("\"" + name + "\":f0 -> \"Node_" + RightChild.mGUID.ToString("N") + "\":f1");
-            if (LeftChild != null)
+            if (LeftChild != null && LeftChild != Node.Sentinal)
                 output.WriteLine("\"" + name + "\":f2 -> \"Node_" + LeftChild.mGUID.ToString("N") + "\":f1");
-
+            if (RightChild == Node.Sentinal)
+            {
+                string rightguid = Guid.NewGuid().ToString("N");
+                output.WriteLine("Node_" + rightguid + " [label=NULL, color=black]");
+                output.WriteLine("\"" + name + "\":f0 -> \"Node_" + rightguid + "\"");
+            }
+            if (LeftChild == Node.Sentinal)
+            {
+                string leftguid = Guid.NewGuid().ToString("N");
+                output.WriteLine("Node_" + leftguid + " [label=NULL, color=black]");
+                output.WriteLine("\"" + name + "\":f2 -> \"Node_" + leftguid + "\"");
+            }
         }
 
         /// <summary>

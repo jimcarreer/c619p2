@@ -5,8 +5,9 @@ set outdir=.\graphs
 set CPGVD=1;
 set RMGVD=1;
 
-if not exist %outdir% MKDIR %outdir%
 if not exist %gvddir%\*.gvd GOTO NOFILES
+if not exist %outdir% echo Making output directory %outdir% ...
+if not exist %outdir% MKDIR %outdir%
 
 if DEFINED CPGVD echo Copying gvd files from %gvddir%\ to %outdir%\ ...
 if DEFINED CPGVD copy %gvddir%\*.gvd %outdir%\
