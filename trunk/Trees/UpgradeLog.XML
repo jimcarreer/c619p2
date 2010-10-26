@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="Trees">
+</Property><Property Name="Solution File" Value="C:\Users\Lauren\Downloads\21468 (1)\Trees\Trees.sln">
+</Property><Property Name="User Options File" Value="C:\Users\Lauren\Downloads\21468 (1)\Trees\Trees.suo">
+</Property><Property Name="Date" Value="Monday, October 25, 2010">
+</Property><Property Name="Time" Value="20:12 PM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="Trees.sln" Description="File successfully backed up as C:\Users\Lauren\Downloads\21468 (1)\Trees\Backup\Trees.sln">
+</Event><Event ErrorLevel="0" Project="" Source="Trees.suo" Description="File successfully backed up as C:\Users\Lauren\Downloads\21468 (1)\Trees\Backup\Trees.suo">
+</Event><Event ErrorLevel="0" Project="Trees" Source="Trees\Trees.csproj" Description="Project file successfully backed up as C:\Users\Lauren\Downloads\21468 (1)\Trees\Backup\Trees\Trees.csproj">
+</Event><Event ErrorLevel="0" Project="Trees" Source="Trees\Trees.csproj.user" Description="Project user file successfully backed up as C:\Users\Lauren\Downloads\21468 (1)\Trees\Backup\Trees\Trees.csproj.user">
+</Event><Event ErrorLevel="0" Project="Trees" Source="Trees\BinarySearchTrees.cs" Description="File successfully backed up as C:\Users\Lauren\Downloads\21468 (1)\Trees\Backup\Trees\BinarySearchTrees.cs">
+</Event><Event ErrorLevel="0" Project="Trees" Source="Trees\Program.cs" Description="File successfully backed up as C:\Users\Lauren\Downloads\21468 (1)\Trees\Backup\Trees\Program.cs">
+</Event><Event ErrorLevel="0" Project="Trees" Source="Trees\Properties\AssemblyInfo.cs" Description="File successfully backed up as C:\Users\Lauren\Downloads\21468 (1)\Trees\Backup\Trees\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="1" Project="Trees" Source="Trees\Trees.csproj" Description="Your project is targeting .NET Framework 2.0 or 3.0. If your project uses assemblies requiring a newer .NET Framework, your project will fail to build. You can change the .NET Framework version by clicking Properties on the project menu and then selecting a new version in the '.NET Framework' dropdown box. (In Visual Basic, this is located on the Compile tab by clicking the 'Advanced Compiler Options...' button.)">
+</Event><Event ErrorLevel="0" Project="Trees" Source="Trees\Trees.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Trees" Source="Trees\Trees.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="Trees.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="Trees.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Trees" Source="Trees\Trees.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>
