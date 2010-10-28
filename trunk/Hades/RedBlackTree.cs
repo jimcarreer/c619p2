@@ -29,6 +29,40 @@ namespace Hades
             int depth = -1;
             return GetNodeColor(mRoot, p, ref depth);
         }
+        public Node Search(Person p)
+        {
+            Node current = mRoot;
+            Node parent = null;
+            while (current != Node.Sentinal)
+            {
+                parent = current;
+                if (p < current.Key)
+                    current = current.LeftChild;
+                else if (p > current.Key)
+                    current = current.RightChild;
+                else if (p == current.Key)
+                    return current;
+                else
+                    return null;
+            }
+            return null;
+        }
+        public int Search(DateTime start, DateTime end)
+        {
+            int countNodes=0;
+            Node current = mRoot;
+            Node parent = null;
+            /*
+            while (current != Node.Sentinal)
+            {
+                parent = current;
+                if (start > current.Key.Died)
+                    
+
+            }
+             * */
+            return countNodes;
+        }
 
         public Node Insert(Person p)
         {
