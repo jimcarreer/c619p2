@@ -22,8 +22,8 @@ namespace Hades
         public Node Parent = null;
         public Colors Color = Colors.Black;
         //Interval Tree Augmentation Data
-        public DateTime RightMax = DateTime.MaxValue;
-        public DateTime LeftMax = DateTime.MaxValue;
+        public Node RightMax;
+        public Node LeftMax;
         //Sweet data center
         public Person Key = null;
 
@@ -35,17 +35,24 @@ namespace Hades
         #region Constructors
         private Node()
         {
-            Key = null;
+            Key = new Person("SENTINAL");
             RightChild = this;
             LeftChild = this;
             Parent = null;
             Color = Colors.Black;
+            LeftMax = this;
+            RightMax = this;
         }
 
         public Node(Person p)
         {
             mGUID = Guid.NewGuid();
             Key = p;
+            LeftMax = Node.Sentinal;
+            RightMax = Node.Sentinal;
+            Parent = null;
+            LeftChild = null;
+            RightChild = null;
         }
 
         public Node(Person p, Node parent, Node right, Node left)
@@ -133,9 +140,9 @@ namespace Hades
                 return;
 
             string name = "Node_" + mGUID.ToString("N");
-            string label = "label=\"<f0> " + LeftMax.ToString("MM/dd/yyyy");
+            string label = "label=\"<f0> " + LeftMax.Key.Died.ToString("MM/dd/yyyy");
             label += " | <f1> " + Key.ToString("G");
-            label += " | <f2> " + LeftMax.ToString("MM/dd/yyyy") + "\", ";
+            label += " | <f2> " + RightMax.Key.Died.ToString("MM/dd/yyyy") + "\", ";
             string options;
             if (Color == Colors.Black)
                 options = "color=black";
@@ -146,9 +153,9 @@ namespace Hades
             output.WriteLine(name + "[ " + label + options + " ];");
 
             //Fill in the subtrees
-            if (RightChild != null)
+            if (RightChild != null && RightChild != Node.Sentinal)
                 RightChild.WriteDotCode(output);
-            if (LeftChild != null)
+            if (LeftChild != null && LeftChild != Node.Sentinal)
                 LeftChild.WriteDotCode(output);
 
             //Write structural code

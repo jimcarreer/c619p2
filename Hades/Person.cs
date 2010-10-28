@@ -11,17 +11,22 @@ namespace Hades
         #region Members
         private bool mAlive = false;
         private DateTime mBirth = DateTime.MinValue;
-        private DateTime mDeath = DateTime.MaxValue;
+        private DateTime mDeath = DateTime.MinValue;
         private string mName = "NONE";
         #endregion
 
         #region Constructors
+        public Person(string name)
+        {
+            mName = name;
+        }
+
         public Person(string name, DateTime birth)
+            : this(name)
         {
             if (birth > DateTime.Now)
                 throw new ArgumentException("Birth date can not be in the future");
 
-            mName = name;
             mBirth = birth;
             mAlive = true;
         }
