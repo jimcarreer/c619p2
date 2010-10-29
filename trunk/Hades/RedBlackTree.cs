@@ -93,7 +93,7 @@ namespace Hades
         }
         #endregion
 
-        #region Protected Methods      
+        #region Protected Methods 
         protected Node.Colors GetNodeColor(Node subroot, Person p, ref int depth)
         {
             if (p == subroot.Key)
@@ -198,6 +198,105 @@ namespace Hades
             y.LeftChild = x;
             if(x != Node.Sentinal)
                 x.Parent = y;
+        }
+
+        private void FixDelete(Node x)
+        {
+            while (x != mRoot && x.Color == Node.Colors.Black)
+            {
+                if (x == x.Parent.LeftChild)
+                {
+                    Node w = x.Parent.RightChild;
+                    if (w.Color == Node.Colors.Red)
+                    {
+                        w.Color = Node.Colors.Black;
+                        x.Parent.Color = Node.Colors.Red;
+                        RotateLeft(x.Parent);
+                        w = x.Parent.RightChild;
+                    }
+                    if (w.LeftChild.Color == Node.Colors.Black && w.RightChild.Color == Node.Colors.Black)
+                    {
+                        w.Color = Node.Colors.Red;
+                        x = x.Parent;
+                    }
+                    else
+                    {
+                        if (w.RightChild.Color == Node.Colors.Black)
+                        {
+                            w.LeftChild.Color = Node.Colors.Black;
+                            w.Color = Node.Colors.Red;
+                            RotateLeft(x.Parent);
+                            x = mRoot;
+                        }
+                    }
+                }
+                else
+                {
+                    Node w = x.Parent.LeftChild;
+                    if (w.Color == Node.Colors.Red)
+                    {
+                        w.Color = Node.Colors.Black;
+                        x.Parent.Color = Node.Colors.Red;
+                        RotateRight(x.Parent);
+                        w = x.Parent.LeftChild;
+                    }
+                    if (w.RightChild.Color == Node.Colors.Black && w.LeftChild.Color == Node.Colors.Black)
+                    {
+                        w.Color = Node.Colors.Red;
+                        x = x.Parent;
+                    }
+                    else
+                    {
+                        if (w.LeftChild.Color == Node.Colors.Black)
+                        {
+                            w.RightChild.Color = Node.Colors.Black;
+                            w.Color = Node.Colors.Red;
+                            RotateLeft(w);
+                            w = x.Parent.LeftChild;
+                        }
+                        w.Color = x.Parent.Color;
+                        x.Parent.Color = Node.Colors.Black;
+                        w.LeftChild.Color = Node.Colors.Black;
+                        RotateRight(x.Parent);
+                        x = mRoot;
+                    }
+                }
+            }
+            x.Color = Node.Colors.Black;
+        }
+
+        public void Delete(Node z)
+        {
+            Node x, y;
+
+            if (z.LeftChild == Node.Sentinal || z.RightChild == Node.Sentinal)
+                y = z;
+            else
+            {
+                y = z.RightChild;
+                while (y.LeftChild != Node.Sentinal) y = y.LeftChild;
+            }
+
+            if (y.LeftChild != Node.Sentinal)
+                x = y.LeftChild;
+            else
+                x = y.RightChild;
+
+            x.Parent = y.Parent;
+            if (y.Parent != null)
+                if (y == y.Parent.LeftChild)
+                    y.Parent.LeftChild = x;
+                else
+                    y.Parent.RightChild = x;
+            else
+                mRoot = x;
+
+            if (y != z)
+                z.Key = y.Key;
+
+            if (y.Color == Node.Colors.Black)
+                FixDelete(x);
+
         }
         #endregion
     }
