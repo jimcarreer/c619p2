@@ -52,15 +52,14 @@ namespace Hades
             int countNodes=0;
             Node current = mRoot;
             Node parent = null;
-            /*
             while (current != Node.Sentinal)
             {
                 parent = current;
                 if (start > current.Key.Died)
+                    break;
                     
 
             }
-             * */
             return countNodes;
         }
 
