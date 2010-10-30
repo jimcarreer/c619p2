@@ -79,6 +79,19 @@ namespace Hades
                 replacement.Parent = this.Parent;
         }
 
+        public Node MaxMax
+        {
+            get
+            {
+                if (this.Key.Died >= LeftMax.Key.Died && this.Key.Died >= RightMax.Key.Died)
+                    return this;
+                if (RightMax.Key.Died >= LeftMax.Key.Died)
+                    return RightMax;
+                else
+                    return LeftMax;
+            }
+        }
+
         public virtual void NullifyFamily()
         {
             this.Parent = null;
@@ -136,13 +149,21 @@ namespace Hades
         private void WriteDotCode(StreamWriter output)
         {
             //Must be sentinal
-            if (Key == null)
+            if (this == Node.Sentinal)
                 return;
 
             string name = "Node_" + mGUID.ToString("N");
-            string label = "label=\"<f0> " + LeftMax.Key.Died.ToString("MM/dd/yyyy");
+            string label = "label=\"";
+            if(!LeftMax.Key.IsAlive)
+                label += "<f0> " + LeftMax.Key.Died.ToString("MM/dd/yyyy");
+            else
+                label += "<f0> PRESENT ";
             label += " | <f1> " + Key.ToString("G");
-            label += " | <f2> " + RightMax.Key.Died.ToString("MM/dd/yyyy") + "\", ";
+            if (!RightMax.Key.IsAlive)
+                label += " | <f2> " + RightMax.Key.Died.ToString("MM/dd/yyyy");
+            else
+                label += " | <f2> PRESENT";
+            label += "\", ";
             string options;
             if (Color == Colors.Black)
                 options = "color=black";
@@ -159,21 +180,21 @@ namespace Hades
                 LeftChild.WriteDotCode(output);
 
             //Write structural code
-            if (RightChild != null && RightChild != Node.Sentinal)
-                output.WriteLine("\"" + name + "\":f0 -> \"Node_" + RightChild.mGUID.ToString("N") + "\":f1");
             if (LeftChild != null && LeftChild != Node.Sentinal)
-                output.WriteLine("\"" + name + "\":f2 -> \"Node_" + LeftChild.mGUID.ToString("N") + "\":f1");
+                output.WriteLine("\"" + name + "\":f0 -> \"Node_" + LeftChild.mGUID.ToString("N") + "\":f1");
+            if (RightChild != null && RightChild != Node.Sentinal)
+                output.WriteLine("\"" + name + "\":f2 -> \"Node_" + RightChild.mGUID.ToString("N") + "\":f1");
             if (RightChild == Node.Sentinal)
             {
                 string rightguid = Guid.NewGuid().ToString("N");
                 output.WriteLine("Node_" + rightguid + " [label=NULL, color=black]");
-                output.WriteLine("\"" + name + "\":f0 -> \"Node_" + rightguid + "\"");
+                output.WriteLine("\"" + name + "\":f2 -> \"Node_" + rightguid + "\"");
             }
             if (LeftChild == Node.Sentinal)
             {
                 string leftguid = Guid.NewGuid().ToString("N");
                 output.WriteLine("Node_" + leftguid + " [label=NULL, color=black]");
-                output.WriteLine("\"" + name + "\":f2 -> \"Node_" + leftguid + "\"");
+                output.WriteLine("\"" + name + "\":f0 -> \"Node_" + leftguid + "\"");
             }
         }
 

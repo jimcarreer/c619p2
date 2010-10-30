@@ -9,7 +9,7 @@ namespace Hades
     class RedBlackTree
     {
         protected Node mRoot = null;
-        protected int mNodeCount = 0;
+        protected int mNodeCount = -1;
 
         #region Properties
         public Node Root{ get { return mRoot; } }
@@ -67,26 +67,44 @@ namespace Hades
         {
             Node current = mRoot;
             Node parent = null;
+            Node added = new Node(p, null, Node.Sentinal, Node.Sentinal);
             while (current != Node.Sentinal)
             {
                 parent = current;
                 if (p < current.Key)
+                {
+                    if (current.LeftMax.Key.Died <= added.Key.Died)
+                        current.LeftMax = added;
                     current = current.LeftChild;
+
+                }
                 else
+                {
+                    if (current.RightMax.Key.Died <= added.Key.Died)
+                        current.RightMax = added;
                     current = current.RightChild;
+                }
             }
-            Node added = new Node(p, parent, Node.Sentinal, Node.Sentinal);
+            added.Parent = parent;
             added.Color = Node.Colors.Red;
             mNodeCount++;
             if (parent != null)
             {
                 if (p < parent.Key)
+                {
                     parent.LeftChild = added;
+                    parent.LeftMax = added;
+                }
                 else
+                {
                     parent.RightChild = added;
+                    parent.RightMax = added;
+                }
             }
             else
                 mRoot = added;
+            added.LeftMax = added;
+            added.RightMax = added;
             FixInsert(added);
             return added;
         }
@@ -174,6 +192,36 @@ namespace Hades
             y.RightChild = x;
             if (x != Node.Sentinal)
                 x.Parent = y;
+
+            //Fix aug data
+            if (x.LeftChild == Node.Sentinal)
+                x.LeftMax = x;
+            else
+                x.LeftMax = y.RightMax;
+
+            y.RightMax = x.MaxMax; 
+            FixAncestorMax(y);
+        }
+
+        private static int mFixReachedRoot = 0;
+        public int FixReachedRoot { get { return mFixReachedRoot; } }
+        private static void FixAncestorMax(Node y)
+        {
+            //Go back up the chain and correct
+            Node parent = y.Parent;
+            while (parent != null)
+            {
+                if (y == parent.RightChild && y != y.MaxMax && parent.RightMax.Key.Died <= y.MaxMax.Key.Died)
+                    parent.RightMax = y.MaxMax;
+                else if (y == parent.LeftMax && y != y.MaxMax && parent.LeftMax.Key.Died <= y.MaxMax.Key.Died)
+                    parent.LeftMax = y.MaxMax;
+                else
+                    break;
+                y = parent;
+                parent = y.Parent;
+            }
+            if (parent == null)
+                mFixReachedRoot++;
         }
 
         private void RotateLeft(Node x)
@@ -197,12 +245,22 @@ namespace Hades
             y.LeftChild = x;
             if(x != Node.Sentinal)
                 x.Parent = y;
+
+            //Fix aug data
+            if (x.RightChild == Node.Sentinal)
+                x.RightMax = x;
+            else
+                x.RightMax = y.LeftMax;
+
+            y.LeftMax = x.MaxMax;
+            FixAncestorMax(y);
         }
 
         private void FixDelete(Node x)
         {
             while (x != mRoot && x.Color == Node.Colors.Black)
             {
+                Console.WriteLine("At " + x.Key.ToString());
                 if (x == x.Parent.LeftChild)
                 {
                     Node w = x.Parent.RightChild;
@@ -264,38 +322,86 @@ namespace Hades
             x.Color = Node.Colors.Black;
         }
 
-        public void Delete(Node z)
+        public void Delete(Person p)
         {
-            Node x, y;
+            Node target = Search(p);
+            if (target != null)
+                Delete(target);
+        }
+        
+        private void Delete(Node target)
+        {
+            Node child, successor;
 
-            if (z.LeftChild == Node.Sentinal || z.RightChild == Node.Sentinal)
-                y = z;
+            if (target.LeftChild == Node.Sentinal || target.RightChild == Node.Sentinal)
+                successor = target;
             else
             {
-                y = z.RightChild;
-                while (y.LeftChild != Node.Sentinal) y = y.LeftChild;
+                //Find left most child of the right subtree
+                successor = target.RightChild;
+                while (successor.LeftChild != Node.Sentinal) 
+                    successor = successor.LeftChild;
             }
 
-            if (y.LeftChild != Node.Sentinal)
-                x = y.LeftChild;
+            if (successor.LeftChild != Node.Sentinal)
+                child = successor.LeftChild;
             else
-                x = y.RightChild;
+                child = successor.RightChild;
 
-            x.Parent = y.Parent;
-            if (y.Parent != null)
-                if (y == y.Parent.LeftChild)
-                    y.Parent.LeftChild = x;
+            child.Parent = successor.Parent;
+            if (successor.Parent != null)
+                if (successor == successor.Parent.LeftChild)
+                    successor.Parent.LeftChild = child;
                 else
-                    y.Parent.RightChild = x;
+                    successor.Parent.RightChild = child;
+            else if(child != Node.Sentinal)
+                mRoot = child;
+           
+            //fix aug data
+            //target is inner node
+            if (target.RightChild != Node.Sentinal || target.LeftChild != Node.Sentinal)
+            {
+                if (successor.Parent.RightChild == Node.Sentinal)
+                    successor.Parent.RightMax = successor.Parent;
+                else
+                    successor.Parent.RightMax = successor.RightChild.MaxMax;
+
+                if (successor.Parent.LeftChild == Node.Sentinal)
+                    successor.Parent.LeftMax = successor.Parent;
+                else
+                    successor.Parent.LeftMax = successor.LeftChild.MaxMax;
+                FixDeleteAncestorMax(successor.Parent, successor);
+            }
+            //target is leaf
             else
-                mRoot = x;
+            {
+                if (target == target.Parent.LeftMax)
+                    target.Parent.LeftMax = target.Parent;
+                else if (target == target.Parent.RightMax)
+                    target.Parent.RightMax = target.Parent;
+                FixDeleteAncestorMax(target.Parent, target);
+            }
 
-            if (y != z)
-                z.Key = y.Key;
 
-            if (y.Color == Node.Colors.Black)
-                FixDelete(x);
+            if (successor != target)
+                target.Key = successor.Key;
+            if (successor.Color == Node.Colors.Black && child != Node.Sentinal)
+                FixDelete(child);
+            mNodeCount--;
+        }
 
+        private static void FixDeleteAncestorMax(Node inner, Node successor)
+        {
+            while(inner.Parent != null)
+            {
+                if (inner == inner.Parent.LeftChild && successor == inner.Parent.LeftMax)
+                    inner.Parent.LeftMax = inner.MaxMax;
+                else if (inner == inner.Parent.RightChild && successor == inner.Parent.RightMax)
+                    inner.Parent.RightMax = inner.MaxMax;
+                else
+                    break;
+                inner = inner.Parent;
+            }
         }
         #endregion
     }
