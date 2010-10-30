@@ -67,7 +67,13 @@ namespace Hades
 
         public DateTime Died
         {
-            get { return mDeath; }
+            get 
+            {
+                if (mAlive)
+                    return DateTime.Today;
+                else
+                    return mDeath; 
+            }
         }
 
         public bool IsAlive
