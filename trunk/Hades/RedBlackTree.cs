@@ -32,10 +32,8 @@ namespace Hades
         public Node Search(Person p)
         {
             Node current = mRoot;
-            Node parent = null;
             while (current != Node.Sentinal)
             {
-                parent = current;
                 if (p < current.Key)
                     current = current.LeftChild;
                 else if (p > current.Key)
@@ -47,22 +45,72 @@ namespace Hades
             }
             return null;
         }
+        
         public int Search(DateTime start, DateTime end)
         {
             int countNodes=0;
+            Node[] nodeList=null;
             Node current = mRoot;
             Node parent = null;
             while (current != Node.Sentinal)
             {
-                parent = current;
-                if (start > current.Key.Died)
+             /*   
+                if (start < current.LeftMax.Key.Died)
+                {
+                    current = current.LeftChild;
+                    countNodes++;
+
+                } 
+                else
+                {
+                    if (start > current.LeftMax.Key.Died)
+                    {
+                            current = current.Parent;
+                    }
+                    else if (end < current.RightMax.Key.Born)
+                    {
+                        current = current.Parent;
+                    }
+                    current = current.RightChild;
+                    countNodes++;
+                }
+              */
+                if (start > current.LeftMax.Key.Born)
+                {
+                    if (end < current.RightMax.Key.Died)
+                    {
+
+                        current = current.RightChild;
+                        countNodes++;
+                    }
+                    else if(end< current.LeftMax.Key.Died)
+                    {
+                        current = current.LeftChild;
+                        countNodes++;
+                    }
+                }
+                else
+                {
+                    if (start > current.LeftMax.Key.Died)
+                    {
+                        current = current.Parent;
+                    }
+                    else if (end < current.RightMax.Key.Born)
+                    {
+                        current = current.Parent;
+                    }
                     break;
-                    
+                }
+                
+
 
             }
+              
+
             return countNodes;
         }
-
+        
+        
         public Node Insert(Person p)
         {
             Node current = mRoot;
