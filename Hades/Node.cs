@@ -51,8 +51,8 @@ namespace Hades
             LeftMax = Node.Sentinal;
             RightMax = Node.Sentinal;
             Parent = null;
-            LeftChild = null;
-            RightChild = null;
+            LeftChild = Node.Sentinal;
+            RightChild = Node.Sentinal;
         }
 
         public Node(Person p, Node parent, Node right, Node left)
