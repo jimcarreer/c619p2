@@ -98,6 +98,7 @@ namespace Hades
             this.RightChild = null;
             this.LeftChild = null;
         }
+        
         #endregion
 
         #region Various relations

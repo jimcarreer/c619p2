@@ -20,20 +20,51 @@ namespace Hades
                 Person p = pr.NextPerson();
                 if (p == null)
                     break;
-                if(i==2)
+                if(i==5)
                 pp = p;
-                if (i==4)
+                if (i==6)
                 p2 = p;
                 rb.Insert(p);
                 //bt.Insert(p);
-                //rb.Root.WriteDotGraph("rb-insert" + i + ".gvd");
+               // rb.Root.WriteDotGraph("rb-insert" + i + ".gvd");
                 //bt.Root.WriteDotGraph("bt-insert" + i + ".gvd");
                 
                 //Console.WriteLine("Inserting " + p);
             }
-            rb.Root.WriteDotGraph("rb-final.gvd");
             //bt.Root.WriteDotGraph("bt-final.gvd");
             Console.WriteLine("RB Tree : " + rb.NodeCount);
+            Console.WriteLine("BI Tree : " + bt.NodeCount);
+            Node search=rb.Search(pp);
+            Console.WriteLine("Searching for " + pp);
+            Console.WriteLine("Search node " + search.Key);
+            Node search2 = rb.Search(p2);
+            Console.WriteLine("Searching for " + p2.Name);
+            Console.WriteLine("Search node " + search2.Key.Name);
+            DateTime start = new DateTime(1910, 1, 1);
+            DateTime end = new DateTime(1919, 12, 31);
+            int ct = rb.Search(start, end);
+            Console.WriteLine("1910s-"+ct);
+            DateTime start2 = new DateTime(1920, 1, 1);
+            DateTime end2 = new DateTime(1929, 12, 31);
+            int ct2 = rb.Search(start2, end2);
+            Console.WriteLine("1920s-" + ct2);
+            DateTime start3 = new DateTime(1930, 1, 1);
+            DateTime end3 = new DateTime(1939, 12, 31);
+            int ct3 = rb.Search(start3, end3);
+            Console.WriteLine("1910s-" + ct3);
+            DateTime start4 = new DateTime(1940, 1, 1);
+            DateTime end4 = new DateTime(1949, 12, 31);
+            int ct4 = rb.Search(start4, end4);
+            Console.WriteLine("1940s- " + ct4);
+            DateTime start5 = new DateTime(1950, 1, 1);
+            DateTime end5 = new DateTime(1959, 12, 31);
+            int ct5 = rb.Search(start5, end5);
+            Console.WriteLine("1950s- " + ct5);
+            DateTime start6 = new DateTime(1960, 1, 1);
+            DateTime end6 = new DateTime(1969, 12, 31);
+            int ct6 = rb.Search(start6, end6);
+            Console.WriteLine("1960s-" + ct);
+            rb.Root.WriteDotGraph("rb-serch.gvd");
             Console.WriteLine("Fix reached root: " + rb.FixReachedRoot.ToString());
             Console.WriteLine("Deleting " + pp.ToString() + " ... ");
             rb.Delete(pp);
@@ -53,7 +84,13 @@ namespace Hades
             //DateTime end = new DateTime(1919, 12, 31);
             //int ct = rb.Search(start, end);
             //Console.WriteLine(ct);
+           
+           // Console.WriteLine(search2.Key.Name + " was deleted");
+
+            rb.Root.WriteDotGraph("rb-final.gvd");
             Console.ReadKey();
+
+           
         }
     }
 }
