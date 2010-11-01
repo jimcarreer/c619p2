@@ -48,59 +48,80 @@ namespace Hades
         
         public int Search(DateTime start, DateTime end)
         {
+            
             int countNodes=0;
-            Node[] nodeList=null;
             Node current = mRoot;
-            Node parent = null;
             while (current != Node.Sentinal)
             {
-             /*   
-                if (start < current.LeftMax.Key.Died)
-                {
-                    current = current.LeftChild;
-                    countNodes++;
+                //Console.WriteLine(current.Key);
 
-                } 
-                else
-                {
-                    if (start > current.LeftMax.Key.Died)
+             if (DateTime.Compare(end, current.LeftMax.Key.Died) < 0)
                     {
-                            current = current.Parent;
-                    }
-                    else if (end < current.RightMax.Key.Born)
-                    {
-                        current = current.Parent;
-                    }
-                    current = current.RightChild;
-                    countNodes++;
-                }
-              */
-                if (start > current.LeftMax.Key.Born)
-                {
-                    if (end < current.RightMax.Key.Died)
-                    {
+                        if (current.LeftChild != null)
+                        {
 
-                        current = current.RightChild;
-                        countNodes++;
+                            Console.WriteLine("Leftmax  "+current.Key);
+                            current = current.LeftChild;
+                            countNodes++;
+                        }
+                        else
+                        {
+                            current = current.Parent.RightChild;
+                        }
                     }
-                    else if(end< current.LeftMax.Key.Died)
+                    else
                     {
-                        current = current.LeftChild;
-                        countNodes++;
+                        if (current.RightChild != null)
+                        {
+
+                            Console.WriteLine("Right Max "+current.Key);
+                            current = current.RightChild;
+                            countNodes++;
+                        }
+                        else
+                        {
+                            current = current.Parent.LeftChild;
+                        }
                     }
-                }
-                else
-                {
-                    if (start > current.LeftMax.Key.Died)
+          
+
+           
+                    if (DateTime.Compare(start, current.RightMax.Key.Born) > 0)
                     {
-                        current = current.Parent;
+                        if (DateTime.Compare(end, current.RightMax.Key.Died) < 0)
+                        {
+                            if (current.RightChild != null)
+                            {
+
+                                Console.WriteLine("Right Max "+current.Key);
+                                current = current.RightChild;
+                                countNodes++;
+                            }
+                            else
+                            {
+                                current = current.Parent.LeftChild;
+                            }
+                        }
+                        else
+                        {
+                            if (current.LeftChild != null)
+                            {
+
+                                Console.WriteLine("Left Max "+ current.Key);
+                                current = current.LeftChild;
+                                countNodes++;
+                            }
+                            else
+                            {
+                                current = current.Parent.RightChild;
+                            }
+                        }
                     }
-                    else if (end < current.RightMax.Key.Born)
-                    {
-                        current = current.Parent;
-                    }
-                    break;
-                }
+                
+        
+
+                    
+              
                 
 
 
