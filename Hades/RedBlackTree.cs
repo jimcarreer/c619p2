@@ -10,6 +10,10 @@ namespace Hades
     {
         protected Node mRoot = null;
         protected int mNodeCount = -1;
+        public int countNodes;
+        public TimeSpan runTime;
+        public DateTime startTime;
+        public DateTime endTime;
 
         #region Properties
         public Node Root{ get { return mRoot; } }
@@ -45,88 +49,14 @@ namespace Hades
             }
             return null;
         }
+       
         
         public int Search(DateTime start, DateTime end)
         {
-            
-            int countNodes=0;
+            startTime = DateTime.Now;
             Node current = mRoot;
-            while (current != Node.Sentinal)
-            {
-                //Console.WriteLine(current.Key);
-
-             if (DateTime.Compare(end, current.LeftMax.Key.Died) < 0)
-                    {
-                        if (current.LeftChild != null)
-                        {
-
-                            Console.WriteLine("Leftmax  "+current.Key);
-                            current = current.LeftChild;
-                            countNodes++;
-                        }
-                        else
-                        {
-                            current = current.Parent.RightChild;
-                        }
-                    }
-                    else
-                    {
-                        if (current.RightChild != null)
-                        {
-
-                            Console.WriteLine("Right Max "+current.Key);
-                            current = current.RightChild;
-                            countNodes++;
-                        }
-                        else
-                        {
-                            current = current.Parent.LeftChild;
-                        }
-                    }
-          
-
-           
-                    if (DateTime.Compare(start, current.RightMax.Key.Born) > 0)
-                    {
-                        if (DateTime.Compare(end, current.RightMax.Key.Died) < 0)
-                        {
-                            if (current.RightChild != null)
-                            {
-
-                                Console.WriteLine("Right Max "+current.Key);
-                                current = current.RightChild;
-                                countNodes++;
-                            }
-                            else
-                            {
-                                current = current.Parent.LeftChild;
-                            }
-                        }
-                        else
-                        {
-                            if (current.LeftChild != null)
-                            {
-
-                                Console.WriteLine("Left Max "+ current.Key);
-                                current = current.LeftChild;
-                                countNodes++;
-                            }
-                            else
-                            {
-                                current = current.Parent.RightChild;
-                            }
-                        }
-                    }
-                
-        
-
-                    
-              
-                
-
-
-            }
-              
+            countNodes = 0;
+            countNodes = Search(current,start, end);
 
             return countNodes;
         }
@@ -180,6 +110,40 @@ namespace Hades
         #endregion
 
         #region Protected Methods 
+        protected int Search(Node current,DateTime Start, DateTime Stop)
+        {
+            
+        if(current == Node.Sentinal)
+        {
+        return 0;
+        }
+        countNodes = 0;
+        if (current.Key.Born <= Stop && current.Key.Died >= Start)
+            countNodes++;
+
+        if (current.Key.Born <= Stop && current.RightMax.Key.Died >= Start)
+        {
+            countNodes += Search(current.RightChild, Start, Stop);
+        }
+        if (current.LeftMax.Key.Died >= Start)
+        {
+            countNodes += Search(current.LeftChild, Start, Stop);
+        }
+            
+            endTime = DateTime.Now;
+            calcRunTime();
+        
+            return countNodes;
+        }
+        protected void calcRunTime()
+        {
+            runTime = endTime - startTime;
+           
+        }
+        protected TimeSpan getSearchRunTime()
+        {
+            return runTime;
+        }
         protected Node.Colors GetNodeColor(Node subroot, Person p, ref int depth)
         {
             if (p == subroot.Key)
