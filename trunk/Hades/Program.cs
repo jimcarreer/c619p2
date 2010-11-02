@@ -26,15 +26,9 @@ namespace Hades
                 if (i==6)
                 p2 = p;
                 rb.Insert(p);
-                //bt.Insert(p);
-               // rb.Root.WriteDotGraph("rb-insert" + i + ".gvd");
-                //bt.Root.WriteDotGraph("bt-insert" + i + ".gvd");
-                
-                //Console.WriteLine("Inserting " + p);
             }
             DateTime stop = DateTime.Now;
             TimeSpan rbRun = stop-st;
-            //bt.Root.WriteDotGraph("bt-final.gvd");
             Console.WriteLine("RB Tree : " + rb.NodeCount);
             Console.WriteLine("Run Time : " + rbRun.TotalMilliseconds);
             Node search=rb.Search(pp);
@@ -125,19 +119,6 @@ namespace Hades
             rb.Delete(p2);
             rb.Root.WriteDotGraph("rb-del2.gvd");
             Console.WriteLine("RB Tree : " + rb.NodeCount);
-            //Node search=rb.Search(pp);
-            //Console.WriteLine("Searching for " + pp);
-            //Console.WriteLine("Search node " + search.Key);
-            //Node search2 = rb.Search(p2);
-            //Console.WriteLine("Searching for " + p2.Name);
-            //Console.WriteLine("Search node " + search2.Key.Name);
-            //DateTime start = new DateTime(1910, 1, 1);
-            //DateTime end = new DateTime(1919, 12, 31);
-            //int ct = rb.Search(start, end);
-            //Console.WriteLine(ct);
-           
-           // Console.WriteLine(search2.Key.Name + " was deleted");
-
             rb.Root.WriteDotGraph("rb-final.gvd");
             Console.ReadKey();
 
